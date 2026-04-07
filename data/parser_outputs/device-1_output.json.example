@@ -1,0 +1,59 @@
+{
+    "device-tag": "device-1",
+    "vlans": {
+        "missing": [],
+        "49": {
+            "vid": "49",
+            "vlan_interface": "",
+            "vlan_interface_prefix": {
+                "ipv4": [],
+                "ipv6": []
+            },
+            "vlan_interface_description": "",
+            "vlan_name": "VLAN-49",
+            "interfaces": {
+                "tagged": [
+                    "Port-Channel1",
+                    "Port-Channel14"
+                ],
+                "untagged": []
+            }
+        }
+        "2010": {
+            "vid": "2010",
+            "vlan_interface": "",
+            "vlan_interface_prefix": {
+                "ipv4": [],
+                "ipv6": []
+            },
+            "vlan_interface_description": "",
+            "vlan_name": "VLAN-2010",
+            "interfaces": {
+                "tagged": [
+                    "Port-Channel1",
+                    "Ethernet9/1"
+                ],
+                "untagged": []
+            }
+        },
+        "3990": {
+            "vid": "3990",
+            "vlan_interface": "",
+            "vlan_interface_prefix": {
+                "ipv4": [],
+                "ipv6": []
+            },
+            "vlan_interface_description": "",
+            "vlan_name": "VLAN-3990",
+            "interfaces": {
+                "tagged": [
+                    "Port-Channel1",
+                    "Ethernet9/1"
+                ],
+                "untagged": [
+					"Ethernet8/1"
+				]
+            }
+        }
+    }
+}

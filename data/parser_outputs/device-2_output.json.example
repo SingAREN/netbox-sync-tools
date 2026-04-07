@@ -1,0 +1,62 @@
+{
+    "device-tag": "device-2",
+    "vlans": {
+        "missing": [],
+        "44": {
+            "vid": "44",
+            "vlan_interface": "Ve 44",
+            "vlan_interface_prefix": {
+                "ipv4": [
+					"192.0.2.44/31"
+				],
+                "ipv6": [
+					"2001:db8::44/127"
+				]
+            },
+            "vlan_interface_description": "",
+            "vlan_name": "VLAN-44",
+            "interfaces": {
+                "tagged": [
+                    "Port-channel 2",
+                    "Port-channel 3"
+                ],
+                "untagged": []
+            }
+        }
+        "2010": {
+            "vid": "2010",
+            "vlan_interface": "",
+            "vlan_interface_prefix": {
+                "ipv4": [],
+                "ipv6": []
+            },
+            "vlan_interface_description": "",
+            "vlan_name": "VLAN-2010",
+            "interfaces": {
+                "tagged": [
+                    "Port-channel 1"
+                ],
+                "untagged": []
+            }
+        },
+        "3991": {
+            "vid": "3991",
+            "vlan_interface": "",
+            "vlan_interface_prefix": {
+                "ipv4": [],
+                "ipv6": []
+            },
+            "vlan_interface_description": "",
+            "vlan_name": "VLAN-3991",
+            "interfaces": {
+                "tagged": [
+                    "Port-channel 3",
+                    "Ethernet 0/7"
+                ],
+                "untagged": [
+					"Ethernet 0/6"
+				]
+            }
+        }
+    }
+}

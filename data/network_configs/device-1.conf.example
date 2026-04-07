@@ -1,0 +1,165 @@
+! device: DEVICE-1 (DCS-7050DX4-32S, EOS-4.33.1.1F)
+!
+! boot system flash:/EOS64-4.33.1.1F.swi
+!
+no aaa root
+!
+no ip igmp snooping
+!
+no service interface inactive port-id allocation disabled
+!
+service routing protocols model multi-agent
+!
+logging level default informational
+!
+hostname DEVICE-1
+!
+snmp-server vrf mgmt
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+clock timezone Asia/Singapore
+!
+vlan 49
+   name VLAN-49
+!
+vlan 2010
+   name VLAN-2010
+!
+vlan 3990
+   name VLAN-3990
+!
+vrf instance mgmt
+!
+banner login
+WARNING NOTICE: This is a private system. The actual or attempt, unauthorized access, use or modification of this system is strictly prohibited.Individuals undertaking such unauthorized access, use or modification are subject to company disciplinary proceedings and/or criminal and civil penalties under applicable domestic and foreign laws. The use of this system may be monitored and recorded for administrative and security reasons in accordance with local law. If such monitoring and/or recording reveal possible evidence of criminal activity, the results of such monitoring may be provided to law enforcement officials. Continued use of this system after receipt of this notice constitutes consent to such security monitoring and recording
+EOF
+banner motd
+WARNING NOTICE:This is a private system for use by the organisation and its affiliates. If you are not an authorized user of this system disconnect immediately.
+EOF
+!
+interface Port-Channel1
+   description Uplink
+   switchport trunk allowed vlan 49,2010,3990
+   switchport mode trunk
+!
+interface Port-Channel14
+   description International Link A
+   switchport trunk allowed vlan 49
+   switchport mode trunk
+!
+interface Ethernet1/1
+!
+interface Ethernet2/1
+!
+interface Ethernet3/1
+!
+interface Ethernet4/1
+!
+interface Ethernet5/1
+!
+!
+interface Ethernet6/1
+!
+interface Ethernet7/1
+!
+interface Ethernet8/1
+   description To Customer A
+   switchport access vlan 3990
+!
+interface Ethernet9/1
+   description To Customer B
+   switchport trunk allowed vlan 2010,3990
+   switchport mode trunk
+!
+!
+interface Ethernet10/1
+!
+interface Ethernet11/1
+!
+!
+interface Ethernet12/1
+!
+interface Ethernet13/1
+!
+interface Ethernet14/1
+!
+interface Ethernet15/1
+!
+interface Ethernet16/1
+!
+interface Ethernet17/1
+!
+interface Ethernet18/1
+!
+interface Ethernet19/1
+!
+interface Ethernet20/1
+!
+interface Ethernet21/1
+!
+interface Ethernet22/1
+!
+interface Ethernet23/1
+!
+interface Ethernet24/1
+!
+interface Ethernet25/1
+!
+interface Ethernet25/5
+!
+interface Ethernet25/6
+!
+interface Ethernet25/7
+!
+interface Ethernet25/8
+!
+interface Ethernet26/1
+!
+interface Ethernet27/1
+!
+interface Ethernet28/1
+!
+interface Ethernet29/1
+   description Uplink
+   channel-group 1 mode active
+!
+interface Ethernet30/1
+   description Uplink
+   channel-group 1 mode active
+!
+interface Ethernet31/1
+   description International Link A
+   channel-group 14 mode active
+!
+interface Ethernet32/1
+   description International Link A
+   channel-group 14 mode active
+!
+interface Ethernet33
+!
+interface Ethernet34
+!
+interface Management1
+   description Out-of-band Management
+   vrf mgmt
+   ip address
+!
+ip routing
+ip routing vrf mgmt
+!
+ip route 0.0.0.0/0 192.168.0.1
+ip route vrf mgmt 0.0.0.0/0 192.168.0.1
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+end

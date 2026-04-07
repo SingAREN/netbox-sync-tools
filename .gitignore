@@ -1,0 +1,8 @@
+configs/*.ini
+data/parser_outputs/*.json
+data/network_configs/*.conf
+logs/*.log
+output/
+.venv
+.idea
+*.pyc

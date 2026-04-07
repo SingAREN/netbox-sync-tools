@@ -1,0 +1,11 @@
+[DEVICE-1]
+DEVICE = 'DEVICE-1'
+CONFIGURATION_FILENAME = 'device-1.conf.example'
+TAG = 'device-1'
+OUTPUT_FILENAME = 'device-1_output.json.example'
+
+[DEVICE-2]
+DEVICE = 'DEVICE-2'
+CONFIGURATION_FILENAME = 'device-2.conf.example'
+TAG = 'device-2'
+OUTPUT_FILENAME = 'device-2_output.json.example'

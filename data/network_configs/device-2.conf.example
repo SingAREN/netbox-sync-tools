@@ -1,0 +1,132 @@
+clock timezone Asia/Singapore
+!
+switch-attributes host-name DEVICE-2
+!
+vlan 44
+ statistics
+ router-interface Ve 44
+ name VLAN-44
+!
+vlan 2010
+ statistics
+ name VLAN-2010
+!
+vlan 3991
+ statistics
+ name VLAN-3991
+!
+protocol lldp
+ system-description Extreme SLX9640 Switch/Router
+!
+interface Loopback 11
+ description BGP Router-ID
+ no shutdown
+!
+interface Ve 44
+ description VLAN-44 Peer
+ ip address 192.0.2.44/31
+ ipv6 address 2001:db8::44/127
+ no shutdown
+!
+interface Ethernet 0/1
+ shutdown
+!
+interface Ethernet 0/2
+ shutdown
+!
+interface Ethernet 0/3
+ shutdown
+!
+interface Ethernet 0/4
+ shutdown
+!
+interface Ethernet 0/5
+ shutdown
+!
+interface Ethernet 0/6
+ description 
+ switchport
+ switchport mode access
+ switchport access vlan 3991
+ sflow enable
+ no shutdown
+!
+interface Ethernet 0/7
+ description 
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan add 3991
+ switchport trunk tag native-vlan
+ sflow enable
+ no shutdown
+!
+
+interface Ethernet 0/28
+ description To Link A
+ channel-group 2 mode active type standard
+ lacp timeout short
+ sflow enable
+ no shutdown
+!
+interface Ethernet 0/29
+ description To Link A
+ channel-group 2 mode active type standard
+ lacp timeout short
+ sflow enable
+ no shutdown
+!
+interface Ethernet 0/30
+ description To Link B
+ channel-group 3 mode active type standard
+ lacp timeout short
+ sflow enable
+ no shutdown
+!
+interface Ethernet 0/31
+ description To Link B
+ channel-group 3 mode active type standard
+ lacp timeout short
+ sflow enable
+ no shutdown
+!
+interface Ethernet 0/35
+ description Uplink
+ channel-group 1 mode active type standard
+ lacp timeout short
+ sflow enable
+ no shutdown
+!
+interface Ethernet 0/36
+ description Uplink
+ channel-group 1 mode active type standard
+ lacp timeout short
+ sflow enable
+ no shutdown
+!
+interface Port-channel 1
+ mtu 9194
+ description Uplink
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan add 2010
+ switchport trunk tag native-vlan
+ no shutdown
+!
+interface Port-channel 2
+ mtu 9194
+ description Link A
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan add 44
+ switchport trunk tag native-vlan
+ no shutdown
+!
+interface Port-channel 3
+ mtu 9194
+ description Link B
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan add 44,3991
+ switchport trunk tag native-vlan
+ no shutdown
+!
