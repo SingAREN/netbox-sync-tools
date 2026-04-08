@@ -80,12 +80,12 @@ def main():
         # Read parameters (Notice the keys are now FILENAME instead of FILEPATH)
         config_filename = config.get(each_section, 'CONFIGURATION_FILENAME').strip('"\'')
         tag = config.get(each_section, 'TAG').strip('"\'')
-        output_filename = config.get(each_section, 'OUTPUT_FILENAME').strip('"\'')
+        output_vlan_filename = config.get(each_section, 'OUTPUT_VLAN_FILENAME').strip('"\'')
         device = config.get(each_section, 'DEVICE').strip('"\'')
 
         # --- NEW LOGIC: Auto-resolve absolute paths ---
         conf_fp = os.path.join(PROJECT_ROOT, 'data', 'network_configs', config_filename)
-        output_fp = os.path.join(PROJECT_ROOT, 'data', 'parser_outputs', output_filename)
+        output_vlan_fp = os.path.join(PROJECT_ROOT, 'data', 'parser_outputs', output_vlan_filename)
 
         print(f"\n{'=' * 50}")
         print(f"Processing Device: {device} ({each_section})")
@@ -96,7 +96,7 @@ def main():
 
         # Step 1: Run Parser
         print("-> Running Parser...")
-        parser_success = execute_parser(conf_fp, tag, output_fp)
+        parser_success = execute_parser(conf_fp, tag, output_vlan_fp)
 
         if not parser_success:
             summary['failed'].append({'device': device, 'reason': 'Parser Error'})
@@ -104,7 +104,7 @@ def main():
 
         # Step 2: Run Importer
         print("-> Running Importer...")
-        importer_success = execute_importer(output_fp, device)
+        importer_success = execute_importer(output_vlan_fp, device)
 
         if not importer_success:
             summary['failed'].append({'device': device, 'reason': 'Importer Error'})
