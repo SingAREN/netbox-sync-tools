@@ -60,12 +60,12 @@ def add_update_vlan_list_to_netbox(nb, vlans, tag_obj):
             needs_update = False
             audit_changes = []
 
-            # 1. Compare Name
+            # 1. Compare Name (Modified: NetBox is the Source of Truth)
             if vlan.name != name:
-                audit_changes.append(f"Name changed from '{vlan.name}' to '{name}'")
-                vlan.name = name
-                needs_update = True
-                print(f"      - Name changed to: {name}")
+                # We record the mismatch but DO NOT change vlan.name or trigger a save.
+                warning_msg = f"Name Mismatch: Switch config says '{name}', but NetBox says '{vlan.name}'"
+                print(f"      - [!] {warning_msg}. NetBox name retained.")
+                logger.warning(f"VLAN VID {vid} {warning_msg}")
 
             # 2. Compare Status
             # pynetbox choice fields return objects. Safely get the string value to compare.

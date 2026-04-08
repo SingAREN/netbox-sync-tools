@@ -79,6 +79,16 @@ def resolve_conflicts(vlan_master):
     resolved_names = {}
 
     for vid, data in vlan_master.items():
+        # --- NEW: Catch and skip multiple NetBox entries ---
+        if data['netbox'] == "MULTIPLE_ENTRIES_FOUND":
+            msg = f"Skipping VID {vid}: Multiple VLANs share this ID in NetBox. Manual resolution required."
+            print(f"\n{'-' * 60}")
+            print(f" [!] {msg}")
+            print(f"{'-' * 60}")
+            logger.warning(msg)
+            continue
+        # ---------------------------------------------------
+
         unique_names = set()
 
         if data['netbox']:
@@ -167,7 +177,7 @@ def update_netbox_vlans(vlan_master, resolved_names):
             try:
                 nb_vlan.save()
                 print(f"  [+] NetBox VID {vid}: Updated name from '{old_name}' to '{correct_name}'")
-                logger.info(f"Interactive Remediation: Updated NetBox VID {vid} name to '{correct_name}'")
+                logger.info(f"Interactive Remediation: Updated NetBox VID {vid} name from '{old_name}' to '{correct_name}'")
                 updates_made = True
             except Exception as e:
                 print(f"  [!] Failed to update NetBox VID {vid}: {e}")
@@ -212,7 +222,6 @@ def generate_configs(vlan_master, resolved_names):
             for task in tasks:
                 print(f"! Changing from '{task['old_name']}'")
                 print(f"vlan {task['vid']} bridge 1 name {task['correct_name']} state enable")
-                print("commit")
 
         # SLX-OS / Standard logic
         else:
@@ -222,6 +231,8 @@ def generate_configs(vlan_master, resolved_names):
                 print(f" name {task['correct_name']}")
 
         print("end")
+        if "soe-2-ext-100ge" in device_tag.lower():
+            print("commit")
         print("copy run start")
         print("!" + "-" * 40)
 
