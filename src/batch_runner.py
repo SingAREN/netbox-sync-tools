@@ -66,6 +66,31 @@ def execute_importer(output_fp, device):
         return False
 
 
+def execute_device_importer(device, manufacturer, dev_type, role, site):
+    importer_script = os.path.join(CURRENT_DIR, 'importers', 'device_importer.py')
+
+    tokens = [
+        sys.executable,
+        importer_script,
+        '-d', device,
+        '-m', manufacturer,
+        '-t', dev_type,
+        '-r', role,
+        '-s', site
+    ]
+
+    try:
+        results = subprocess.run(tokens, capture_output=True, text=True, check=True, env=custom_env)
+        print(f"  [+] Device Importer Output:\n{results.stdout.strip()}")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"  [!] Device Importer failed with return code: {e.returncode}")
+        error_details = f"STDOUT: {e.stdout.strip()} | STDERR: {e.stderr.strip()}"
+        print(f"  [!] Details: {error_details}")
+        logger.error(f"Device Importer failed for device {device}: {error_details}")
+        return False
+
+
 def main():
     logger.info("Starting Batch Execution")
     config = get_batch_config()
@@ -83,6 +108,12 @@ def main():
         output_vlan_filename = config.get(each_section, 'OUTPUT_VLAN_FILENAME').strip('"\'')
         device = config.get(each_section, 'DEVICE').strip('"\'')
 
+        # Read NEW Device parameters
+        manufacturer = config.get(each_section, 'MANUFACTURER').strip('"\'')
+        dev_type = config.get(each_section, 'DEVICE_TYPE').strip('"\'')
+        role = config.get(each_section, 'DEVICE_ROLE').strip('"\'')
+        site = config.get(each_section, 'SITE').strip('"\'')
+
         # --- NEW LOGIC: Auto-resolve absolute paths ---
         conf_fp = os.path.join(PROJECT_ROOT, 'data', 'network_configs', config_filename)
         output_vlan_fp = os.path.join(PROJECT_ROOT, 'data', 'parser_outputs', output_vlan_filename)
@@ -93,6 +124,14 @@ def main():
         print(f"{'=' * 50}")
 
         logger.info(f"Processing batch section: {each_section} for device {device}")
+
+        # Step 0: Run Device Importer (NEW)
+        print("-> Running Device Importer...")
+        device_success = execute_device_importer(device, manufacturer, dev_type, role, site)
+
+        if not device_success:
+            summary['failed'].append({'device': device, 'reason': 'Device Importer Error'})
+            continue  # Skip the rest if the physical device failed to create/sync
 
         # Step 1: Run Parser
         print("-> Running Parser...")
